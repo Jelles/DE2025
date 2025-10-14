@@ -34,7 +34,7 @@
         "--image",
         "${_LOCATION}-docker.pkg.dev/$PROJECT_ID/${_REPOSITORY}/prediction-ui-embedded:0.0.1",
         "--region",
-        "us-central1",
+        "europe-west4",
         "--platform",
         "managed",
         "--port",

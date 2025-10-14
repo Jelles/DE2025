@@ -39,7 +39,19 @@ def check_diabetes():
         predictor_api_url = os.environ['PREDICTOR_API']
         res = requests.post(predictor_api_url, json=json.loads(json.dumps(prediction_input)))
 
-        prediction_value = res.json()['result']
+        app.logger.info("Response status: %s", res.status_code)
+        app.logger.info("Response text: %s", res.text)
+
+        if res.status_code != 200:
+            return f"Error from predictor API: {res.status_code} - {res.text}", 500
+
+        try:
+            data = res.json()
+        except ValueError:
+            return f"Invalid JSON response from predictor API: {res.text}", 500
+
+        prediction_value = data.get('result')
+
         app.logger.info("Prediction Output : %s", prediction_value)
         return render_template("response_page.html",
                                prediction_variable=eval(prediction_value))
